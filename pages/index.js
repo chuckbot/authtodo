@@ -1,25 +1,29 @@
 import Head from 'next/head';
 import { table, minifyRecords } from './api/utils/airtable';
-import Todo from '../compenents/Todo';
 import Navbar from '../components/Navbar';
+import Todo from '../components/Todo';
+import { TodosContext } from '../contexts/TodosContext';
+import { useEffect, useContext } from 'react';
 
 export default function Home({ initialTodos }) {
+  const {todos, setTodos} = useContext(TodosContext);
+  useEffect(() => {
+    setTodos(initialTodos);
+  }, [])
   return (
     <div className="max-w-xl m-auto p-2">
       <Head>
         <title>Authenticated TODO App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <Navbar />
       <main>
-        <Navbar />
-        <>
-          <ul>
-            {initialTodos &&
-              initialTodos.map((todo) => (
-                <Todo todo={todo} key={todo.id} />
-              ))}
-          </ul>
-        </>
+        <ul>
+          {todos &&
+            todos.map((todo) => (
+              <Todo todo={todo} key={todo.id} />
+            ))}
+        </ul>
       </main>
     </div>
   );
