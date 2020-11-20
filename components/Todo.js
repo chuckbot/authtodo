@@ -4,14 +4,14 @@ import { TodosContext } from '../contexts/TodosContext';
 export default function Todo({ todo }) {
     const {updateTodo, deleteTodo} = useContext(TodosContext);
 
-    const handleToggleCompleted = () =>{
+    const handleToggleCompleted = () => {
         const updatedFields = {
             ...todo.fields,
             completed: !todo.fields.completed,
         };
-        const updatedTodo = {id: todo.id, fields: updatedFields};
+        const updatedTodo = { id: todo.id, fields: updatedFields };
         updateTodo(updatedTodo);
-    }
+    };
     return (
         <li className="bg-white flex items-center shadow-lg rounded-lg my-2 py-2 px-4">
             <input

@@ -5,7 +5,7 @@ const TodosContext = createContext();
 const TodosProvider = ({ children }) => {
     const [todos, setTodos] = useState([]);
 
-    const refreshTodos = async() => {
+    const refreshTodos = async () => {
         try {
             const res = await fetch('/api/getTodos');
             const latestTodos = await res.json();
@@ -15,7 +15,7 @@ const TodosProvider = ({ children }) => {
         }
     };
 
-    const addTodo = async(description) => {
+    const addTodo = async (description) => {
         try {
             const res = await fetch('/api/createTodo', {
                 method: 'POST',
@@ -31,7 +31,7 @@ const TodosProvider = ({ children }) => {
         }
     };
 
-    const updateTodo = async(updatedTodo) => {
+    const updateTodo = async (updatedTodo) => {
         try {
             const res = await fetch('/api/updateTodo', {
                 method: 'PUT',
@@ -41,8 +41,10 @@ const TodosProvider = ({ children }) => {
             await res.json();
             setTodos((prevTodos) => {
                 const existingTodos = [...prevTodos];
-                const existingTodo = existingTodos.find((todo) => todo.id === updatedTodo.id);
-                existingTodo.fields = updateTodo.fields;
+                const existingTodo = existingTodos.find(
+                    (todo) => todo.id === updatedTodo.id
+                );
+                existingTodo.fields = updatedTodo.fields;
                 return existingTodos;
             });
         } catch (err) {
@@ -50,13 +52,14 @@ const TodosProvider = ({ children }) => {
         }
     };
 
-    const deleteTodo = async(id) => {
+    const deleteTodo = async (id) => {
         try {
             await fetch('/api/deleteTodo', {
                 method: 'Delete',
-                body:JSON.stringify({ id }),
+                body: JSON.stringify({ id }),
                 headers: { 'Content-Type': 'application/json' },
             });
+
             setTodos((prevTodos) => {
                 return prevTodos.filter((todo) => todo.id !== id);
             });
@@ -64,7 +67,6 @@ const TodosProvider = ({ children }) => {
             console.error(err);
         }
     };
-
     return (
         <TodosContext.Provider
             value={{
